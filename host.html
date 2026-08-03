@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Become a Host | Vajra</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+
+body{
+    background:#F8FAFC;
+    font-family:'Inter',sans-serif;
+}
+
+.container{
+    max-width:1200px;
+    margin:120px auto 70px;
+    padding:0 5%;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.header h1{
+    font-size:48px;
+    margin-bottom:15px;
+}
+
+.header p{
+    color:#64748B;
+    font-size:18px;
+    max-width:700px;
+    margin:auto;
+    line-height:1.8;
+}
+
+/* Card */
+
+.form-card{
+    background:white;
+    border-radius:22px;
+    padding:40px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+/* Sections */
+
+.section{
+    margin-bottom:45px;
+}
+
+.section h2{
+    color:#16A34A;
+    margin-bottom:25px;
+}
+
+/* Grid */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea{
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #CBD5E1;
+    outline:none;
+    font-size:15px;
+}
+
+textarea{
+    resize:vertical;
+    min-height:140px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+/* Upload */
+
+.upload-box{
+
+    border:2px dashed #CBD5E1;
+
+    border-radius:16px;
+
+    padding:45px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.upload-box:hover{
+
+    border-color:#16A34A;
+
+    background:#ECFDF5;
+
+}
+
+/* Checkbox */
+
+.checkbox-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:18px;
+
+}
+
+.checkbox-grid label{
+
+background:#F1F5F9;
+
+padding:14px;
+
+border-radius:12px;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+}
+
+/* Earnings */
+
+.earning{
+
+margin-top:40px;
+
+background:#ECFDF5;
+
+padding:30px;
+
+border-radius:16px;
+
+text-align:center;
+
+}
+
+.earning h2{
+
+color:#16A34A;
+
+font-size:38px;
+
+margin-bottom:10px;
+
+}
+
+/* Button */
+
+.submit{
+
+margin-top:35px;
+
+width:100%;
+
+padding:18px;
+
+border:none;
+
+background:#16A34A;
+
+color:white;
+
+font-size:18px;
+
+border-radius:14px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.submit:hover{
+
+background:#15803D;
+
+}
+
+@media(max-width:900px){
+
+.grid,
+.grid-3{
+
+grid-template-columns:1fr;
+
+}
+
+.header h1{
+
+font-size:36px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">
+
+⚡ Vajra
+
+</div>
+
+<ul class="nav-links">
+
+<li><a href="index.html">Home</a></li>
+
+<li><a href="find.html">Find Charger</a></li>
+
+<li><a href="host.html">Become Host</a></li>
+
+<li><a href="dashboard.html">Dashboard</a></li>
+
+</ul>
+
+<div class="nav-buttons">
+
+<a href="login.html" class="btn-outline">Login</a>
+
+<a href="register.html" class="btn-primary">Sign Up</a>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<div class="header">
+
+<h1>Earn Money With Your EV Charger</h1>
+
+<p>
+
+Share your home or office EV charger with the community,
+help more people switch to electric vehicles,
+and generate passive income from your unused charging station.
+
+</p>
+
+</div>
+
+<div class="form-card">
+
+<form>
+
+<!-- PERSONAL -->
+
+<div class="section">
+
+<h2>Host Information</h2>
+
+<div class="grid">
+
+<div class="input-group">
+
+<label>Full Name</label>
+
+<input type="text" placeholder="Enter your name">
+
+</div>
+
+<div class="input-group">
+
+<label>Phone Number</label>
+
+<input type="tel" placeholder="+91">
+
+</div>
+
+<div class="input-group">
+
+<label>Email</label>
+
+<input type="email">
+
+</div>
+
+<div class="input-group">
+
+<label>City</label>
+
+<input type="text">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOCATION -->
+
+<div class="section">
+
+<h2>Charging Location</h2>
+
+<div class="grid">
+
+<div class="input-group full">
+
+<label>Address</label>
+
+<input type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>PIN Code</label>
+
+<input type="text">
+
+</div>
+
+<div class="input-group">
+
+<label>Google Maps Link</label>
+
+<input type="url">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CHARGER -->
+
+<div class="section">
+
+<h2>Charger Details</h2>
+
+<div class="grid-3">
+
+<div class="input-group">
+
+<label>Connector</label>
+
+<select>
+
+<option>CCS2</option>
+
+<option>Type 2</option>
+
+<option>CHAdeMO</option>
+
+<option>GB/T</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Power Output</label>
+
+<select>
+
+<option>7 kW</option>
+
+<option>11 kW</option>
+
+<option>22 kW</option>
+
+<option>30 kW</option>
+
+<option>60+ kW</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Price (₹/kWh)</label>
+
+<input type="number">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- AMENITIES -->
+
+<div class="section">
+
+<h2>Amenities</h2>
+
+<div class="checkbox-grid">
+
+<label><input type="checkbox"> CCTV</label>
+
+<label><input type="checkbox"> Covered Parking</label>
+
+<label><input type="checkbox"> Washroom</label>
+
+<label><input type="checkbox"> Wi-Fi</label>
+
+<label><input type="checkbox"> Waiting Area</label>
+
+<label><input type="checkbox"> Drinking Water</label>
+
+<label><input type="checkbox"> Cafe Nearby</label>
+
+<label><input type="checkbox"> Wheelchair Access</label>
+
+</div>
+
+</div>
+
+<!-- DESCRIPTION -->
+
+<div class="section">
+
+<h2>Description</h2>
+
+<div class="input-group">
+
+<textarea placeholder="Tell drivers about your charging station..."></textarea>
+
+</div>
+
+</div>
+
+<!-- UPLOAD -->
+
+<div class="section">
+
+<h2>Upload Charger Photos</h2>
+
+<div class="upload-box">
+
+<h2>📷 Upload Images</h2>
+
+<p>
+
+Drag & Drop Images Here
+
+<br><br>
+
+or
+
+<br><br>
+
+<input type="file" multiple>
+
+</p>
+
+</div>
+
+</div>
+
+<!-- AVAILABILITY -->
+
+<div class="section">
+
+<h2>Availability</h2>
+
+<div class="grid">
+
+<div class="input-group">
+
+<label>Available From</label>
+
+<input type="time">
+
+</div>
+
+<div class="input-group">
+
+<label>Available Until</label>
+
+<input type="time">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Earnings -->
+
+<div class="earning">
+
+<h2>₹12,800 / Month*</h2>
+
+<p>
+
+Estimated monthly earnings based on local demand.
+
+</p>
+
+</div>
+
+<button class="submit">
+
+Publish My Charger
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+
+</html>

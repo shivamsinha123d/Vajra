@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vajra - Find Chargers</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+body{margin:0;font-family:Arial,sans-serif}#map{height:100vh}.top{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);top:15px;background:#fff;padding:10px 15px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.card{position:absolute;left:50%;transform:translateX(-50%);bottom:20px;z-index:1000;background:#fff;width:90%;max-width:700px;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+button{padding:10px 16px;border:none;border-radius:8px;cursor:pointer}.reserve{background:#16A34A;color:#fff}
+</style>
+</head>
+<body>
+<div class="top"><strong>⚡ Vajra</strong></div>
+<div id="map"></div>
+<div class="card">
+<h2 id="name">Select a Charger</h2>
+<p id="distance">Tap a marker on the map.</p>
+<p id="details">--</p>
+<button onclick="navigate()">Navigate</button>
+<button class="reserve" onclick="alert('Reservation flow coming soon!')">Reserve</button>
+</div>
+<script>
+const map=L.map('map').setView([20.5937,78.9629],5);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
+let userLat,userLng,selected;
+navigator.geolocation.getCurrentPosition(p=>{
+ userLat=p.coords.latitude;userLng=p.coords.longitude;
+ map.setView([userLat,userLng],13);
+ L.circleMarker([userLat,userLng],{radius:8,color:'#fff',fillColor:'#2563eb',fillOpacity:1}).addTo(map).bindPopup('You are here');
+});
+const chargers=[
+{name:"Rahul's Charger",lat:18.559,lng:73.786,price:14,power:"22kW CCS2",rating:4.9},
+{name:"Ananya Home Charger",lat:18.565,lng:73.792,price:11,power:"7kW Type 2",rating:4.8},
+{name:"Akash EV Point",lat:18.571,lng:73.774,price:13,power:"11kW Type 2",rating:4.7}
+];
+function dist(a,b,c,d){const R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180;const q=Math.sin(x/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)**2;return (R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q))).toFixed(1);}
+chargers.forEach(ch=>{
+ L.marker([ch.lat,ch.lng]).addTo(map).on('click',()=>{
+   selected=ch;
+   document.getElementById('name').textContent=ch.name;
+   document.getElementById('details').textContent=`${ch.power} • ₹${ch.price}/kWh • ⭐${ch.rating}`;
+   document.getElementById('distance').textContent=userLat?`${dist(userLat,userLng,ch.lat,ch.lng)} km away`:"Location unavailable";
+   map.setView([ch.lat,ch.lng],15);
+ });
+});
+function navigate(){
+ if(!selected){alert('Select a charger first');return;}
+ window.open(`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`);
+}
+</script>
+</body>
+</html>
