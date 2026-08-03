@@ -1,55 +1,992 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Vajra - Find Chargers</title>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
 <style>
-body{margin:0;font-family:Arial,sans-serif}#map{height:100vh}.top{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);top:15px;background:#fff;padding:10px 15px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.2)}
-.card{position:absolute;left:50%;transform:translateX(-50%);bottom:20px;z-index:1000;background:#fff;width:90%;max-width:700px;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.2)}
-button{padding:10px 16px;border:none;border-radius:8px;cursor:pointer}.reserve{background:#16A34A;color:#fff}
-</style>
-</head>
-<body>
-<div class="top"><strong>⚡ Vajra</strong></div>
-<div id="map"></div>
-<div class="card">
-<h2 id="name">Select a Charger</h2>
-<p id="distance">Tap a marker on the map.</p>
-<p id="details">--</p>
-<button onclick="navigate()">Navigate</button>
-<button class="reserve" onclick="alert('Reservation flow coming soon!')">Reserve</button>
-</div>
-<script>
-const map=L.map('map').setView([20.5937,78.9629],5);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap'}).addTo(map);
-let userLat,userLng,selected;
-navigator.geolocation.getCurrentPosition(p=>{
- userLat=p.coords.latitude;userLng=p.coords.longitude;
- map.setView([userLat,userLng],13);
- L.circleMarker([userLat,userLng],{radius:8,color:'#fff',fillColor:'#2563eb',fillOpacity:1}).addTo(map).bindPopup('You are here');
-});
-const chargers=[
-{name:"Rahul's Charger",lat:18.559,lng:73.786,price:14,power:"22kW CCS2",rating:4.9},
-{name:"Ananya Home Charger",lat:18.565,lng:73.792,price:11,power:"7kW Type 2",rating:4.8},
-{name:"Akash EV Point",lat:18.571,lng:73.774,price:13,power:"11kW Type 2",rating:4.7}
-];
-function dist(a,b,c,d){const R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180;const q=Math.sin(x/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)**2;return (R*2*Math.atan2(Math.sqrt(q),Math.sqrt(1-q))).toFixed(1);}
-chargers.forEach(ch=>{
- L.marker([ch.lat,ch.lng]).addTo(map).on('click',()=>{
-   selected=ch;
-   document.getElementById('name').textContent=ch.name;
-   document.getElementById('details').textContent=`${ch.power} • ₹${ch.price}/kWh • ⭐${ch.rating}`;
-   document.getElementById('distance').textContent=userLat?`${dist(userLat,userLng,ch.lat,ch.lng)} km away`:"Location unavailable";
-   map.setView([ch.lat,ch.lng],15);
- });
-});
-function navigate(){
- if(!selected){alert('Select a charger first');return;}
- window.open(`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`);
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
 }
+
+
+#map{
+    height:100vh;
+}
+
+
+/* Top Search */
+
+.top{
+
+    position:absolute;
+    z-index:1000;
+    top:15px;
+    left:50%;
+    transform:translateX(-50%);
+
+    background:white;
+    padding:15px;
+
+    border-radius:15px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+
+    text-align:center;
+
+}
+
+
+.top strong{
+
+    font-size:22px;
+
+}
+
+
+.top input{
+
+    margin-top:10px;
+
+    width:230px;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+}
+
+
+.top button{
+
+    padding:10px 15px;
+
+    margin-left:5px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#2563eb;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+
+/* Bottom Card */
+
+
+.card{
+
+    position:absolute;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    bottom:20px;
+
+    z-index:1000;
+
+    background:white;
+
+    width:90%;
+
+    max-width:700px;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:0 4px 20px rgba(0,0,0,.25);
+
+}
+
+
+.card button{
+
+    padding:12px 18px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+.navigate{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+
+.reserve{
+
+    background:#16A34A;
+
+    color:white;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="top">
+
+<strong>Vajra</strong>
+
+<br>
+
+<input id="search" placeholder="Search place or pincode">
+
+<button onclick="searchPlace()">Search</button>
+
+
+</div>
+
+
+
+<div id="map"></div>
+
+
+
+<div class="card">
+
+
+<h2 id="name">
+Select a Charger
+</h2>
+
+
+<p id="distance">
+Search or select a charger on map
+</p>
+
+
+<p id="details">
+--
+</p>
+
+
+<button class="navigate" onclick="navigate()">
+Navigate
+</button>
+
+
+<button class="reserve" onclick="reserve()">
+Reserve
+</button>
+
+
+</div>
+
+
+
+
+<script>
+
+
+// Map Setup
+
+
+const map=L.map('map').setView(
+[20.5937,78.9629],
+5
+);
+
+
+
+L.tileLayer(
+
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+{
+
+attribution:'© OpenStreetMap'
+
+}
+
+).addTo(map);
+
+
+
+let userLat;
+
+let userLng;
+
+let selected;
+
+
+
+// User Location
+
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+
+userLat=position.coords.latitude;
+
+userLng=position.coords.longitude;
+
+
+
+map.setView(
+
+[userLat,userLng],
+
+14
+
+);
+
+
+
+L.circleMarker(
+
+[userLat,userLng],
+
+{
+
+radius:8,
+
+color:"#2563eb",
+
+fillColor:"#2563eb",
+
+fillOpacity:1
+
+}
+
+)
+
+.addTo(map)
+
+.bindPopup("You are here");
+
+
+},
+
+
+function(){
+
+alert("Location permission denied");
+
+}
+
+);
+
+
+
+
+
+
+// Charger Database
+
+
+const chargers=[
+
+
+{
+
+name:"Rahul's Charger",
+
+lat:18.559,
+
+lng:73.786,
+
+price:14,
+
+power:"22kW CCS2",
+
+rating:4.9
+
+},
+
+
+{
+
+name:"Ananya Home Charger",
+
+lat:18.565,
+
+lng:73.792,
+
+price:11,
+
+power:"7kW Type 2",
+
+rating:4.8
+
+},
+
+
+{
+
+name:"Akash EV Point",
+
+lat:18.571,
+
+lng:73.774,
+
+price:13,
+
+power:"11kW Type 2",
+
+rating:4.7
+
+},
+{
+name:"Aundh EV Charging Station",
+lat:18.5597,
+lng:73.8070,
+price:15,
+power:"30kW CCS2",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Wakad EV Fast Charge",
+lat:18.5980,
+lng:73.7640,
+price:17,
+power:"60kW Fast Charger",
+rating:4.7,
+status:"Available"
+},
+
+{
+name:"Magarpatta EV Hub",
+lat:18.5167,
+lng:73.9280,
+price:16,
+power:"50kW CCS2",
+rating:4.9,
+status:"Available"
+},
+
+{
+name:"Kharadi Green Charge",
+lat:18.5510,
+lng:73.9470,
+price:14,
+power:"22kW Type 2",
+rating:4.6,
+status:"Busy"
+},
+
+{
+name:"Hadapsar EV Point",
+lat:18.5089,
+lng:73.9260,
+price:13,
+power:"30kW CCS",
+rating:4.7,
+status:"Available"
+},
+
+{
+name:"Camp Area EV Station",
+lat:18.5167,
+lng:73.8790,
+price:15,
+power:"60kW Fast Charger",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Deccan EV Charging Hub",
+lat:18.5158,
+lng:73.8410,
+price:12,
+power:"11kW Type 2",
+rating:4.5,
+status:"Available"
+},
+
+{
+name:"Katraj EV Charging Point",
+lat:18.4529,
+lng:73.8652,
+price:14,
+power:"40kW CCS2",
+rating:4.6,
+status:"Available"
+},
+
+{
+name:"Warje EV Station",
+lat:18.4880,
+lng:73.8070,
+price:13,
+power:"22kW CCS2",
+rating:4.7,
+status:"Available"
+},
+
+{
+name:"Pashan EV Hub",
+lat:18.5400,
+lng:73.7900,
+price:15,
+power:"50kW Fast Charger",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Bavdhan EV Charging",
+lat:18.5085,
+lng:73.7780,
+price:14,
+power:"25kW CCS",
+rating:4.6,
+status:"Busy"
+},
+
+{
+name:"Lohegaon EV Station",
+lat:18.5980,
+lng:73.9130,
+price:16,
+power:"60kW Fast Charger",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Yerwada EV Hub",
+lat:18.5510,
+lng:73.8780,
+price:13,
+power:"22kW Type 2",
+rating:4.7,
+status:"Available"
+},
+
+{
+name:"Bhosari EV Charging Zone",
+lat:18.6298,
+lng:73.8470,
+price:12,
+power:"30kW CCS2",
+rating:4.5,
+status:"Available"
+},
+
+{
+name:"Tathawade EV Point",
+lat:18.6200,
+lng:73.7600,
+price:14,
+power:"50kW Fast Charger",
+rating:4.7,
+status:"Available"
+},
+{
+name:"Koregaon Park EV Hub",
+lat:18.5362,
+lng:73.8940,
+price:16,
+power:"60kW Fast Charger",
+rating:4.9,
+status:"Available"
+},
+
+{
+name:"Kalyani Nagar EV Station",
+lat:18.5480,
+lng:73.9030,
+price:15,
+power:"40kW CCS2",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Pune Airport EV Charge",
+lat:18.5820,
+lng:73.9190,
+price:18,
+power:"120kW Ultra Fast",
+rating:4.9,
+status:"Available"
+},
+
+{
+name:"Model Colony EV Point",
+lat:18.5260,
+lng:73.8400,
+price:13,
+power:"22kW Type 2",
+rating:4.6,
+status:"Available"
+},
+
+{
+name:"FC Road EV Station",
+lat:18.5250,
+lng:73.8405,
+price:14,
+power:"30kW CCS",
+rating:4.7,
+status:"Busy"
+},
+
+{
+name:"JM Road EV Charging",
+lat:18.5215,
+lng:73.8470,
+price:15,
+power:"50kW Fast Charger",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Swargate EV Hub",
+lat:18.5018,
+lng:73.8636,
+price:13,
+power:"25kW CCS2",
+rating:4.5,
+status:"Available"
+},
+
+{
+name:"Kondhwa EV Station",
+lat:18.4575,
+lng:73.8910,
+price:12,
+power:"30kW Type 2",
+rating:4.6,
+status:"Available"
+},
+
+{
+name:"NIBM EV Charging Point",
+lat:18.4780,
+lng:73.8980,
+price:15,
+power:"60kW CCS2",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Sinhagad Road EV Hub",
+lat:18.4660,
+lng:73.8250,
+price:14,
+power:"22kW CCS",
+rating:4.7,
+status:"Available"
+},
+
+{
+name:"Dhayari EV Station",
+lat:18.4460,
+lng:73.8070,
+price:12,
+power:"30kW Fast Charger",
+rating:4.5,
+status:"Available"
+},
+
+{
+name:"Narhe EV Charging",
+lat:18.4500,
+lng:73.8200,
+price:13,
+power:"25kW CCS2",
+rating:4.6,
+status:"Busy"
+},
+
+{
+name:"Pimple Saudagar EV Hub",
+lat:18.5940,
+lng:73.7980,
+price:14,
+power:"50kW Fast Charger",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Pimple Nilakh EV Point",
+lat:18.5790,
+lng:73.7860,
+price:13,
+power:"22kW Type 2",
+rating:4.7,
+status:"Available"
+},
+
+{
+name:"Chinchwad EV Station",
+lat:18.6290,
+lng:73.7810,
+price:12,
+power:"40kW CCS2",
+rating:4.6,
+status:"Available"
+},
+
+{
+name:"Akurdi EV Charging Hub",
+lat:18.6500,
+lng:73.7680,
+price:14,
+power:"60kW Fast Charger",
+rating:4.8,
+status:"Available"
+},
+
+{
+name:"Nigdi EV Point",
+lat:18.6505,
+lng:73.7700,
+price:13,
+power:"30kW CCS",
+rating:4.5,
+status:"Busy"
+},
+
+{
+name:"Talawade EV Station",
+lat:18.6750,
+lng:73.7700,
+price:15,
+power:"120kW Ultra Fast",
+rating:4.9,
+status:"Available"
+},
+
+{
+name:"Moshi EV Charging Zone",
+lat:18.7100,
+lng:73.8500,
+price:12,
+power:"25kW CCS2",
+rating:4.5,
+status:"Available"
+},
+
+{
+name:"Wagholi EV Hub",
+lat:18.5800,
+lng:73.9800,
+price:14,
+power:"50kW Fast Charger",
+rating:4.7,
+status:"Available"
+}
+
+];
+
+
+
+
+
+
+// Distance Calculation
+
+
+function dist(a,b,c,d)
+
+{
+
+
+const R=6371;
+
+
+const x=(c-a)*Math.PI/180;
+
+const y=(d-b)*Math.PI/180;
+
+
+
+const q=
+
+Math.sin(x/2)**2+
+
+Math.cos(a*Math.PI/180)*
+
+Math.cos(c*Math.PI/180)*
+
+Math.sin(y/2)**2;
+
+
+
+return (
+
+R*2*Math.atan2(
+
+Math.sqrt(q),
+
+Math.sqrt(1-q)
+
+)
+
+).toFixed(1);
+
+
+}
+
+
+
+
+
+
+
+// Add Chargers
+
+
+chargers.forEach(ch=>{
+
+
+L.marker(
+
+[ch.lat,ch.lng]
+
+)
+
+.addTo(map)
+
+.on('click',()=>{
+
+
+selected=ch;
+
+
+document.getElementById("name").innerHTML=
+
+ch.name;
+
+
+
+document.getElementById("details").innerHTML=
+
+`${ch.power} • ₹${ch.price}/kWh • ⭐${ch.rating}`;
+
+
+
+if(userLat)
+
+document.getElementById("distance").innerHTML=
+
+dist(
+
+userLat,
+
+userLng,
+
+ch.lat,
+
+ch.lng
+
+)+" km away";
+
+
+
+map.setView(
+
+[ch.lat,ch.lng],
+
+15
+
+);
+
+
+
+});
+
+
+});
+
+
+
+
+
+
+// Search Location
+
+
+async function searchPlace(){
+
+
+let place=
+
+document.getElementById("search").value;
+
+
+
+if(place==""){
+
+alert("Enter location");
+
+return;
+
+}
+
+
+
+let url=
+
+`https://nominatim.openstreetmap.org/search?format=json&q=${place}`;
+
+
+
+let response=
+
+await fetch(url);
+
+
+
+let data=
+
+await response.json();
+
+
+
+if(data.length==0)
+
+{
+
+alert("Location not found");
+
+return;
+
+}
+
+
+
+let lat=data[0].lat;
+
+let lon=data[0].lon;
+
+
+
+map.setView(
+
+[lat,lon],
+
+14
+
+);
+
+
+
+L.marker(
+
+[lat,lon]
+
+)
+
+.addTo(map)
+
+.bindPopup(place)
+
+.openPopup();
+
+
+}
+
+
+
+
+
+
+
+function navigate(){
+
+
+if(!selected)
+
+{
+
+alert("Select charger first");
+
+return;
+
+}
+
+
+
+window.open(
+
+`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`
+
+);
+
+
+}
+
+
+
+
+
+
+function reserve(){
+
+
+if(!selected)
+
+{
+
+alert("Select charger first");
+
+return;
+
+}
+
+
+alert(
+
+"Reservation request sent for "+selected.name
+
+);
+
+
+}
+
+
+
 </script>
+
+
 </body>
+
 </html>
