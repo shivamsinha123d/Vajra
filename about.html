@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Vajra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Inter',sans-serif;
+    }
+
+    body{
+      background:#f7faf8;
+      color:#172033;
+      line-height:1.6;
+    }
+
+    nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 7%;
+      background:rgba(255,255,255,.96);
+      box-shadow:0 8px 25px rgba(15,23,42,.06);
+      position:sticky;
+      top:0;
+      z-index:1000;
+    }
+
+    .logo{
+      color:#16a34a;
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:28px;
+      list-style:none;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:#334155;
+      font-weight:600;
+      transition:.25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active{
+      color:#16a34a;
+    }
+
+    .hero{
+      min-height:430px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:80px 7%;
+      background:
+        radial-gradient(circle at top left, rgba(34,197,94,.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,.12), transparent 35%),
+        linear-gradient(135deg,#effcf3,#ffffff);
+    }
+
+    .hero-content{
+      max-width:850px;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      background:#dcfce7;
+      color:#15803d;
+      border:1px solid #bbf7d0;
+      padding:8px 16px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:20px;
+    }
+
+    .hero h1{
+      font-size:52px;
+      line-height:1.15;
+      margin-bottom:18px;
+      color:#0f172a;
+    }
+
+    .hero h1 span{
+      color:#16a34a;
+    }
+
+    .hero p{
+      color:#64748b;
+      font-size:18px;
+      max-width:760px;
+      margin:auto;
+    }
+
+    .section{
+      padding:80px 7%;
+    }
+
+    .section-title{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 45px;
+    }
+
+    .section-title h2{
+      font-size:38px;
+      color:#0f172a;
+      margin-bottom:12px;
+    }
+
+    .section-title p{
+      color:#64748b;
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+      max-width:1150px;
+      margin:auto;
+    }
+
+    .about-card{
+      background:white;
+      padding:30px;
+      border-radius:20px;
+      border:1px solid #e2e8f0;
+      box-shadow:0 10px 28px rgba(15,23,42,.06);
+    }
+
+    .about-card .icon{
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      background:#dcfce7;
+      color:#16a34a;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:25px;
+      margin-bottom:18px;
+    }
+
+    .about-card h3{
+      margin-bottom:10px;
+      font-size:21px;
+    }
+
+    .about-card p{
+      color:#64748b;
+    }
+
+    .team-section{
+      background:#ffffff;
+    }
+
+    .team-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:22px;
+      max-width:1250px;
+      margin:auto;
+    }
+
+    .team-card{
+      background:linear-gradient(180deg,#ffffff,#f8fbf9);
+      border:1px solid #e2e8f0;
+      border-radius:22px;
+      padding:28px 18px;
+      text-align:center;
+      box-shadow:0 12px 28px rgba(15,23,42,.07);
+      transition:.3s ease;
+    }
+
+    .team-card:hover{
+      transform:translateY(-7px);
+      box-shadow:0 18px 38px rgba(15,23,42,.12);
+      border-color:#bbf7d0;
+    }
+
+    .avatar{
+      width:78px;
+      height:78px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:27px;
+      font-weight:800;
+      margin:0 auto 18px;
+      box-shadow:0 10px 22px rgba(22,163,74,.22);
+    }
+
+    .team-card h3{
+      font-size:18px;
+      margin-bottom:8px;
+      color:#0f172a;
+    }
+
+    .team-card .role{
+      color:#16a34a;
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:10px;
+    }
+
+    .team-card .prn{
+      display:inline-block;
+      background:#f1f5f9;
+      color:#475569;
+      border-radius:999px;
+      padding:6px 11px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .vision-box{
+      max-width:1100px;
+      margin:auto;
+      background:linear-gradient(135deg,#0f172a,#14532d);
+      color:white;
+      border-radius:28px;
+      padding:48px;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:35px;
+      align-items:center;
+      box-shadow:0 20px 50px rgba(15,23,42,.2);
+    }
+
+    .vision-box h2{
+      font-size:36px;
+      margin-bottom:14px;
+    }
+
+    .vision-box p{
+      color:#d1fae5;
+    }
+
+    .vision-points{
+      display:grid;
+      gap:14px;
+    }
+
+    .vision-point{
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:14px;
+      padding:14px 16px;
+      color:#ecfdf5;
+      font-weight:600;
+    }
+
+    footer{
+      text-align:center;
+      background:#0f172a;
+      color:#cbd5e1;
+      padding:28px 20px;
+      margin-top:80px;
+    }
+
+    @media(max-width:1100px){
+      .team-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+
+    @media(max-width:850px){
+      .nav-links{
+        gap:14px;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+
+      .hero h1{
+        font-size:40px;
+      }
+
+      .about-grid,
+      .vision-box{
+        grid-template-columns:1fr;
+      }
+
+      .team-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+    @media(max-width:560px){
+      nav{
+        flex-direction:column;
+        gap:14px;
+      }
+
+      .nav-links{
+        justify-content:center;
+      }
+
+      .hero{
+        padding:65px 5%;
+      }
+
+      .hero h1{
+        font-size:34px;
+      }
+
+      .section{
+        padding:60px 5%;
+      }
+
+      .section-title h2{
+        font-size:30px;
+      }
+
+      .team-grid{
+        grid-template-columns:1fr;
+      }
+
+      .vision-box{
+        padding:30px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⚡ VAJRA</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="find.html">Find Chargers</a></li>
+    <li><a href="host.html">Become a Host</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <span class="eyebrow">About Vajra</span>
+    <h1>Building a Smarter <span>EV Charging Future</span></h1>
+    <p>
+      Vajra is a community-powered EV charging platform that connects EV owners with
+      trusted charger hosts while preparing for smart charger management and battery intelligence.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>What We Are Building</h2>
+    <p>Vajra combines accessible charging, intelligent management and future-ready battery insights.</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="icon">⚡</div>
+      <h3>Accessible Charging</h3>
+      <p>Helping EV owners discover and reserve trusted charging locations more easily.</p>
+    </div>
+
+    <div class="about-card">
+      <div class="icon">📊</div>
+      <h3>Smart Management</h3>
+      <p>Enabling hosts to monitor charger usage, energy delivery, bookings and earnings.</p>
+    </div>
+
+    <div class="about-card">
+      <div class="icon">🔋</div>
+      <h3>Battery Intelligence</h3>
+      <p>Future insights for battery condition, charging behaviour, temperature and performance.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section team-section">
+  <div class="section-title">
+    <h2>Meet Our Team</h2>
+    <p>The student team working together to design, develop and grow Vajra.</p>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="avatar">SG</div>
+      <h3>Shanyu Gaikwad</h3>
+      <div class="role">Team Member</div>
+      <span class="prn">PRN: 1262250745</span>
+    </div>
+
+    <div class="team-card">
+      <div class="avatar">RN</div>
+      <h3>Ramjot Singh Nandre</h3>
+      <div class="role">Team Member</div>
+      <span class="prn">PRN: 1262252111</span>
+    </div>
+
+    <div class="team-card">
+      <div class="avatar">SS</div>
+      <h3>Shivam Kumar Sinha</h3>
+      <div class="role">Team Member</div>
+      <span class="prn">PRN: 1262251483</span>
+    </div>
+
+    <div class="team-card">
+      <div class="avatar">HS</div>
+      <h3>Harshdeepsingh Siddhu</h3>
+      <div class="role">Team Member</div>
+      <span class="prn">PRN: 1262254117</span>
+    </div>
+
+    <div class="team-card">
+      <div class="avatar">N</div>
+      <h3>Nippun</h3>
+      <div class="role">Team Member</div>
+      <span class="prn">PRN: 1262254151</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="vision-box">
+    <div>
+      <h2>Our Vision</h2>
+      <p>
+        To make EV charging more accessible, intelligent and sustainable by connecting drivers,
+        charger hosts, businesses and future battery-intelligence services through one platform.
+      </p>
+    </div>
+
+    <div class="vision-points">
+      <div class="vision-point">✓ Smarter charging access</div>
+      <div class="vision-point">✓ Better charger utilization</div>
+      <div class="vision-point">✓ Future-ready battery insights</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Vajra EV Network · Built by Team Vajra
+</footer>
+
+</body>
+</html>
